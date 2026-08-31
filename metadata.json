@@ -1,0 +1,6 @@
+{
+  "name": "Saugatuck Trailblazers Student Home Base",
+  "description": "Student Chromebook launchpad for Saugatuck Public Schools featuring School Links, Library Resources, Douglas Elementary portals, and school tools.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
