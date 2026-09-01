@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface LinkLogoProps {
   id: string;
@@ -6,21 +6,29 @@ interface LinkLogoProps {
 }
 
 export const LinkLogo: React.FC<LinkLogoProps> = ({ id, className = 'w-7 h-7' }) => {
-  switch (id) {
-    case 'google-classroom':
-      return (
-        <svg viewBox="0 0 48 48" className={className}>
-          <rect x="4" y="8" width="40" height="32" rx="4" fill="#0F9D58" stroke="#F4B400" strokeWidth="2.5" />
-          <path d="M24 16c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4zm-8 16v-1.5c0-2.7 5.3-4 8-4s8 1.3 8 4V32H16z" fill="#FFFFFF" />
-          <circle cx="16" cy="20" r="2.5" fill="#E8F0FE" opacity="0.8" />
-          <path d="M11 31v-1c0-1.8 3.6-2.7 5.4-2.7.6 0 1.3.1 2 .3-.7.7-1.1 1.6-1.1 2.6v.8H11z" fill="#E8F0FE" opacity="0.8" />
-          <circle cx="32" cy="20" r="2.5" fill="#E8F0FE" opacity="0.8" />
-          <path d="M37 31v-1c0-1.8-3.6-2.7-5.4-2.7-.6 0-1.3.1-2 .3.7.7 1.1 1.6 1.1 2.6v.8H37z" fill="#E8F0FE" opacity="0.8" />
-        </svg>
-      );
+  const [imageError, setImageError] = useState(false);
 
+  // Common image renderer helper with fallback
+  const renderImage = (src: string, alt: string, fallbackNode: React.ReactNode) => {
+    if (imageError) {
+      return fallbackNode;
+    }
+    return (
+      <img
+        src={src}
+        alt={alt}
+        className={`${className} object-contain rounded-md`}
+        referrerPolicy="no-referrer"
+        onError={() => setImageError(true)}
+      />
+    );
+  };
+
+  switch (id) {
     case 'powerschool':
-      return (
+      return renderImage(
+        'https://en.appmobs.com/games/images/20230202/com_powerschool_portal_202302021523479532.png',
+        'PowerSchool Portal',
         <svg viewBox="0 0 48 48" className={className}>
           <rect width="48" height="48" rx="10" fill="#024D94" />
           <path d="M12 11h14c6.6 0 11 4.4 11 11s-4.4 11-11 11h-6v7h-8V11zm8 15h6c2.8 0 4.5-1.7 4.5-4s-1.7-4-4.5-4h-6v8z" fill="#FFFFFF" />
@@ -29,7 +37,10 @@ export const LinkLogo: React.FC<LinkLogoProps> = ({ id, className = 'w-7 h-7' })
       );
 
     case 'student-gmail':
-      return (
+    case 'gmail':
+      return renderImage(
+        'https://brandlogos.net/wp-content/uploads/2020/10/gmail-logo-1.png',
+        'Gmail',
         <svg viewBox="0 0 48 48" className={className}>
           <rect width="48" height="48" rx="10" fill="#FFFFFF" />
           <path fill="#4285F4" d="M38 12H10c-2.2 0-4 1.8-4 4v20c0 2.2 1.8 4 4 4h28c2.2 0 4-1.8 4-4V16c0-2.2-1.8-4-4-4z"/>
@@ -42,7 +53,9 @@ export const LinkLogo: React.FC<LinkLogoProps> = ({ id, className = 'w-7 h-7' })
       );
 
     case 'google-drive':
-      return (
+      return renderImage(
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Google_Drive_icon_(2026).svg/1280px-Google_Drive_icon_(2026).svg.png',
+        'Google Drive',
         <svg viewBox="0 0 48 48" className={className}>
           <rect width="48" height="48" rx="10" fill="#FFFFFF" />
           <path fill="#FFC107" d="M17 9l-11 19 6 10 11-19z"/>
@@ -52,13 +65,75 @@ export const LinkLogo: React.FC<LinkLogoProps> = ({ id, className = 'w-7 h-7' })
       );
 
     case 'sps-website':
-      return (
+      return renderImage(
+        'https://www.hollandsentinel.com/gcdn/presto/2021/08/17/NHOS/d50322fd-65e1-4f7b-96fe-c65927707f3c-32dc8744-b3f4-427b-8551-ad1b3948e7a1.jpg',
+        'Saugatuck Public Schools District',
         <img 
           src="https://saugatuckpublicschools.com/wp-content/uploads/2025/07/SPS_Crest-Logo_Public-Schools_2-color-RGBwhitetype.png" 
           alt="SPS Crest"
           className={`${className} object-contain`}
           referrerPolicy="no-referrer"
         />
+      );
+
+    case 'sps-helpful-links':
+      return renderImage(
+        'https://www.hollandsentinel.com/gcdn/presto/2021/08/17/NHOS/d50322fd-65e1-4f7b-96fe-c65927707f3c-32dc8744-b3f4-427b-8551-ad1b3948e7a1.jpg',
+        'SPS Helpful Links',
+        <svg viewBox="0 0 48 48" className={className}>
+          <rect width="48" height="48" rx="10" fill="#4F46E5" />
+          <circle cx="24" cy="24" r="14" stroke="#FFFFFF" strokeWidth="2.5" fill="none" />
+          <path d="M18 24h12m-4-6l6 6-6 6" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+
+    case 'ok2say-michigan':
+    case 'oktosay':
+    case 'ok2say':
+      return renderImage(
+        'https://www.michigan.gov/ok2say/-/media/Project/Websites/shared/Site-Logos/MichiganGlobal-logo-Icon.svg?rev=e29162c06c174283bdf2106d78d932ac&hash=8613973E14C16DDDBCF5EB53CA8467F3',
+        'OK2SAY Michigan',
+        <svg viewBox="0 0 48 48" className={className}>
+          <rect width="48" height="48" rx="10" fill="#991B1B" />
+          <path d="M24 7l13 6v10c0 9-6 15-13 18-7-3-13-9-13-18V13l13-6z" fill="#DC2626" stroke="#FFFFFF" strokeWidth="1.5" />
+          <text x="24" y="27" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="900" fontFamily="sans-serif">OK2</text>
+          <text x="24" y="35" textAnchor="middle" fill="#FFFFFF" fontSize="7" fontWeight="900" fontFamily="sans-serif">SAY</text>
+        </svg>
+      );
+
+    case 'michigan-elibrary':
+      return renderImage(
+        'https://ovidpubliclibrary.com/wp-content/uploads/2025/05/melcat57.jpg',
+        'Michigan eLibrary (MeL)',
+        <svg viewBox="0 0 48 48" className={className}>
+          <rect width="48" height="48" rx="10" fill="#1E40AF" />
+          <path d="M12 34l8-20h6l8 20h-5l-2-6h-10l-2 6h-3zm9-10h6l-3-8-3 8z" fill="#FFFFFF" />
+          <text x="36" y="24" fill="#F59E0B" fontSize="10" fontWeight="bold">eL</text>
+        </svg>
+      );
+
+    case 'sddl-public-library':
+      return renderImage(
+        'https://douglas-mi.municodemeetings.com/sites/douglas-mi.municodemeetings.com/themes/mmportal_subtheme/logo.png',
+        'Saugatuck-Douglas District Library',
+        <svg viewBox="0 0 48 48" className={className}>
+          <rect width="48" height="48" rx="10" fill="#0D9488" />
+          <path d="M12 16h24v2H12zm2 4h20v14H14zm3 3v8m4-8v8m4-8v8m4-8v8" stroke="#FFFFFF" strokeWidth="2" fill="none" />
+          <path d="M10 36h28v3H10z" fill="#FFFFFF" />
+          <path d="M24 9l15 7H9z" fill="#FFFFFF" />
+        </svg>
+      );
+
+    case 'google-classroom':
+      return (
+        <svg viewBox="0 0 48 48" className={className}>
+          <rect x="4" y="8" width="40" height="32" rx="4" fill="#0F9D58" stroke="#F4B400" strokeWidth="2.5" />
+          <path d="M24 16c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4zm-8 16v-1.5c0-2.7 5.3-4 8-4s8 1.3 8 4V32H16z" fill="#FFFFFF" />
+          <circle cx="16" cy="20" r="2.5" fill="#E8F0FE" opacity="0.8" />
+          <path d="M11 31v-1c0-1.8 3.6-2.7 5.4-2.7.6 0 1.3.1 2 .3-.7.7-1.1 1.6-1.1 2.6v.8H11z" fill="#E8F0FE" opacity="0.8" />
+          <circle cx="32" cy="20" r="2.5" fill="#E8F0FE" opacity="0.8" />
+          <path d="M37 31v-1c0-1.8-3.6-2.7-5.4-2.7-.6 0-1.3.1-2 .3.7.7 1.1 1.6 1.1 2.6v.8H37z" fill="#E8F0FE" opacity="0.8" />
+        </svg>
       );
 
     case 'sps-lunch-menu':
@@ -77,15 +152,6 @@ export const LinkLogo: React.FC<LinkLogoProps> = ({ id, className = 'w-7 h-7' })
           <path d="M24 8l12 7v9c0 8-5 13-12 16-7-3-12-8-12-16v-9l12-7z" fill="#E85D04" />
           <path d="M24 12l8 5v6c0 5.5-3.5 9-8 11-4.5-2-8-5.5-8-11v-6l8-5z" fill="#0F3862" />
           <path d="M24 16l3 6h6l-5 4 2 6-6-4-6 4 2-6-5-4h6z" fill="#FFFFFF" />
-        </svg>
-      );
-
-    case 'sps-helpful-links':
-      return (
-        <svg viewBox="0 0 48 48" className={className}>
-          <rect width="48" height="48" rx="10" fill="#4F46E5" />
-          <circle cx="24" cy="24" r="14" stroke="#FFFFFF" strokeWidth="2.5" fill="none" />
-          <path d="M18 24h12m-4-6l6 6-6 6" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       );
 
@@ -118,16 +184,6 @@ export const LinkLogo: React.FC<LinkLogoProps> = ({ id, className = 'w-7 h-7' })
           <path fill="#FBBC05" d="M34 9H14c-1.7 0-3 1.3-3 3v24c0 1.7 1.3 3 3 3h20c1.7 0 3-1.3 3-3V12c0-1.7-1.3-3-3-3z"/>
           <rect x="17" y="16" width="14" height="11" rx="1" fill="#FFFFFF"/>
           <rect x="19" y="19" width="10" height="5" fill="#FBBC05"/>
-        </svg>
-      );
-
-    case 'ok2say-michigan':
-      return (
-        <svg viewBox="0 0 48 48" className={className}>
-          <rect width="48" height="48" rx="10" fill="#991B1B" />
-          <path d="M24 7l13 6v10c0 9-6 15-13 18-7-3-13-9-13-18V13l13-6z" fill="#DC2626" stroke="#FFFFFF" strokeWidth="1.5" />
-          <text x="24" y="27" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="900" fontFamily="sans-serif">OK2</text>
-          <text x="24" y="35" textAnchor="middle" fill="#FFFFFF" fontSize="7" fontWeight="900" fontFamily="sans-serif">SAY</text>
         </svg>
       );
 
@@ -284,25 +340,6 @@ export const LinkLogo: React.FC<LinkLogoProps> = ({ id, className = 'w-7 h-7' })
           <ellipse cx="24" cy="20" rx="6" ry="4" fill="#06B6D4" />
           <path d="M16 34c0-5 3.6-9 8-9s8 4 8 9z" fill="#FFFFFF" />
           <circle cx="24" cy="20" r="2" fill="#FFFFFF" />
-        </svg>
-      );
-
-    case 'michigan-elibrary':
-      return (
-        <svg viewBox="0 0 48 48" className={className}>
-          <rect width="48" height="48" rx="10" fill="#1E40AF" />
-          <path d="M12 34l8-20h6l8 20h-5l-2-6h-10l-2 6h-3zm9-10h6l-3-8-3 8z" fill="#FFFFFF" />
-          <text x="36" y="24" fill="#F59E0B" fontSize="10" fontWeight="bold">eL</text>
-        </svg>
-      );
-
-    case 'sddl-public-library':
-      return (
-        <svg viewBox="0 0 48 48" className={className}>
-          <rect width="48" height="48" rx="10" fill="#0D9488" />
-          <path d="M12 16h24v2H12zm2 4h20v14H14zm3 3v8m4-8v8m4-8v8m4-8v8" stroke="#FFFFFF" strokeWidth="2" fill="none" />
-          <path d="M10 36h28v3H10z" fill="#FFFFFF" />
-          <path d="M24 9l15 7H9z" fill="#FFFFFF" />
         </svg>
       );
 
